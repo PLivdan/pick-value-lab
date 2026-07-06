@@ -156,9 +156,9 @@ body.shake{animation:screenshake .28s}
 .hundo{transform:skew(-8deg);font-family:var(--disp2);font-size:16px;padding:12px 20px;border-radius:3px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
 .hundo>span{display:inline-block;transform:skew(8deg)}
 .hundo:hover{border-color:var(--yellow);color:var(--yellow)}
-.simout{display:flex;align-items:center;gap:16px;justify-content:flex-end}
-.dots{display:grid;grid-template-columns:repeat(20,10px);gap:3px}
-.dot{width:10px;height:10px;border-radius:2px;transform:skew(-8deg);background:rgba(125,132,174,.22)}
+.simout{display:flex;align-items:center;gap:16px}
+.dots{display:grid;grid-template-columns:repeat(50,1fr);gap:3px;flex:1;min-width:0}
+.dot{width:100%;max-width:16px;aspect-ratio:1;justify-self:center;border-radius:2px;transform:skew(-8deg);background:rgba(125,132,174,.22)}
 .dot.wa{background:var(--a)} .dot.wb{background:var(--b)}
 .tally{font-family:var(--mono);font-size:14px;color:var(--dim);white-space:nowrap}
 .tally .ta{color:var(--a);font-weight:600}.tally .tb{color:var(--b);font-weight:600}
