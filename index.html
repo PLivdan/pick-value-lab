@@ -46,12 +46,12 @@ h1 .hl{color:var(--yellow)}
 .pct.a{color:var(--a);text-align:right}
 .pct.b{color:var(--b)}
 .ropewrap{position:relative;padding:14px 0 26px}
-.rope{position:relative;height:54px;border-radius:5px;overflow:hidden;background:linear-gradient(180deg,#ff8a5c,#e8492c);box-shadow:inset 0 3px 10px rgba(0,0,0,.45);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.rope{position:relative;height:68px;border-radius:5px;overflow:hidden;background:linear-gradient(180deg,#ff8a5c,#e8492c);box-shadow:inset 0 3px 10px rgba(0,0,0,.45);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
 #fillA{position:absolute;inset:0 auto 0 0;width:50%;background:linear-gradient(180deg,#7cd6ff,#2f9fe8);transition:width .55s cubic-bezier(.4,1.4,.4,1)}
 .stripes{position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.10) 0 14px,transparent 14px 28px);animation:slide 2.4s linear infinite;pointer-events:none}
 @keyframes slide{to{background-position:80px 0}}
 #flag{position:absolute;top:-6px;bottom:-2px;left:50%;transform:translateX(-50%);transition:left .55s cubic-bezier(.4,1.4,.4,1);pointer-events:none}
-#flag .pole{position:absolute;left:50%;top:0;bottom:0;width:4px;transform:translateX(-50%) skew(-8deg);background:#fff;border-radius:2px;box-shadow:0 0 10px rgba(255,255,255,.6)}
+#flag .pole{position:absolute;left:50%;top:0;bottom:0;width:5px;transform:translateX(-50%) skew(-8deg);background:#fff;border-radius:2px;box-shadow:0 0 10px rgba(255,255,255,.6)}
 #flag .pennant{position:absolute;left:calc(50% + 1px);top:-13px;width:0;height:0;border-top:11px solid var(--yellow);border-bottom:11px solid transparent;border-right:26px solid transparent;filter:drop-shadow(0 0 6px rgba(251,220,44,.6))}
 .rope.live #fillA,.rope.live #flag{transition:none}
 .rope.slam #fillA{transition:width .26s cubic-bezier(.3,.7,.2,1.05)}
@@ -255,7 +255,7 @@ body.shake{animation:screenshake .28s}
 <!-- WHY -->
 <section class="why">
   <div class="whyhead">
-    <h2>Why: every block is a pull</h2>
+    <h2>Where the points come from</h2>
     <div class="key">pulls<i class="ka"></i>Team A<i class="kb"></i>Team B &nbsp;·&nbsp; ⚡ team-up &nbsp;·&nbsp; <span class="shapeic" id="keyshape"></span>team shape</div>
   </div>
   <div class="tug">
