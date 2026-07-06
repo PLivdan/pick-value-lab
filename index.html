@@ -201,12 +201,12 @@ body.shake{animation:screenshake .28s}
   .play{grid-template-columns:1fr}
   .simout{justify-content:center;flex-wrap:wrap}
 }
-.topbar{display:flex;align-items:center;gap:22px;background:linear-gradient(180deg,#141531,var(--gray));border:1px solid var(--line);border-radius:8px;overflow:hidden;padding-right:20px;margin-bottom:14px}.brandtab{background:linear-gradient(160deg,var(--yellow-hi),var(--yellow-lo));color:var(--text-dark);font-family:var(--disp);font-size:27px;letter-spacing:.03em;line-height:1;padding:17px 42px 17px 26px;margin-right:-16px;transform:skew(-11deg);box-shadow:7px 0 20px rgba(0,0,0,.4)}.brandtab>span{display:inline-block;transform:skew(11deg)}.topbar .tag{font-family:var(--body);color:var(--dim);font-size:14px;margin:0}.score{position:relative}.score::before,.score::after{content:"";position:absolute;width:15px;height:15px;border:2px solid var(--yellow);pointer-events:none;opacity:.9}.score::before{top:7px;left:7px;border-right:0;border-bottom:0}.score::after{bottom:7px;right:7px;border-left:0;border-top:0}@media(max-width:640px){.topbar{flex-direction:column;align-items:stretch}.brandtab{margin-right:0;transform:none;text-align:center}.brandtab>span{transform:none}}</style>
+.score{position:relative}.score::before,.score::after{content:"";position:absolute;width:15px;height:15px;border:2px solid var(--yellow);pointer-events:none;opacity:.9}.score::before{top:7px;left:7px;border-right:0;border-bottom:0}.score::after{bottom:7px;right:7px;border-left:0;border-top:0}</style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brandtab"><span>PICK VALUE LAB</span></div>
+<header>
+  <h1>PICK <span class="hl">VALUE</span> LAB</h1>
   <div class="tag">Click heroes to draft a match. Every pick is worth points: <b>1 point ≈ 2.5% win chance</b> in a close game.</div>
 </header>
 
