@@ -120,9 +120,9 @@ body.shake{animation:screenshake .28s}
 .whyhead .key{font-size:12px;color:var(--dim)}
 .key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px;transform:skew(-8deg)}
 .key .ka{background:var(--a)} .key .kb{background:var(--b)}
-.tug{position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:78px}
-.tug::before{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;border-left:2px dashed rgba(225,229,241,.3);transform:skew(-8deg)}
-.side{display:flex;gap:5px;align-items:center;padding:6px 10px;overflow:hidden}
+.tug{position:relative;display:flex;justify-content:center;align-items:center;min-height:78px;overflow-x:auto}
+.tugdiv{flex:0 0 auto;align-self:stretch;margin:8px 3px;border-left:2px dashed rgba(225,229,241,.3);transform:skew(-8deg)}
+.side{display:flex;gap:5px;align-items:center;padding:6px 10px}
 .side.a{flex-direction:row-reverse}
 .blk{flex:none;height:64px;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--disp2);color:#0d1420;animation:pop .35s cubic-bezier(.3,1.5,.5,1);clip-path:polygon(0 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%)}
 .blk img{width:31px;aspect-ratio:1;object-fit:cover;border-radius:2px}
@@ -300,6 +300,7 @@ body.shake{animation:screenshake .28s}
   </div>
   <div class="tug">
     <div class="side a" id="tugA"></div>
+    <div class="tugdiv"></div>
     <div class="side b" id="tugB"></div>
     <div class="tugempty" id="tugEmpty">pick some heroes…</div>
   </div>
