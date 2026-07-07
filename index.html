@@ -375,30 +375,13 @@ S.addEventListener("input",upd);upd();})();
 <p class="note">The fit is ridge-penalized, so correlated or noisy picks get pulled toward average unless the data insists, and it is tuned out-of-sample. A structure shown with a faint ≈ is one whose 1,999-draw bootstrap range still touches zero.</p>
 
 <h4>The data</h4>
-<div class="grid2">
-<span><span class="stat">Matches</span><b class="v">85,992</b> ranked 8.5</span>
-<span><span class="stat">Window</span>21 Jun – 6 Jul 2026</span>
-<span><span class="stat">Player-slots</span>1,035,350</span>
-<span><span class="stat">Unique players</span>145,263</span>
-<span><span class="stat">Hero instances</span>2,041,600</span>
-<span><span class="stat">Player effects</span>66,947</span>
-<span><span class="stat">OOS AUC</span>0.643</span>
-<span><span class="stat">OOS log-loss</span>0.659 (vs 0.693)</span>
-</div>
-<p class="note">Two trackers merged and cross-source de-duplicated; every match carries the full 12-player roster with per-player rank.</p>
+<!--DATASTATS--><div class="grid2"><span><span class="stat">Matches</span><b class="v">85,992</b> ranked 8.5</span><span><span class="stat">Window</span>21 Jun – 7 Jul 2026</span><span><span class="stat">Player-slots</span>1,035,350</span><span><span class="stat">Unique players</span>145,263</span><span><span class="stat">Hero instances</span>2,041,600</span><span><span class="stat">Player effects</span>66,947</span><span><span class="stat">OOS AUC</span>0.6433</span><span><span class="stat">OOS log-loss</span>0.6594 (vs 0.693)</span></div>
+<p class="note">Two trackers merged and cross-source de-duplicated; every match carries the full 12-player roster with per-player rank.</p><!--/DATASTATS-->
 
 <h4>Rank distribution</h4>
 <p>A high-elo sample. Nearly all of it is Celestial and above (player-slots by tier):</p>
-<div class="dist">
-<div class="distrow"><span class="lb">One Above All</span><span class="track"><span class="bar" style="width:17%"></span></span><span class="n">52,572</span></div>
-<div class="distrow"><span class="lb">Eternity</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="n">309,917</span></div>
-<div class="distrow"><span class="lb">Celestial I</span><span class="track"><span class="bar" style="width:87%"></span></span><span class="n">270,040</span></div>
-<div class="distrow"><span class="lb">Celestial II</span><span class="track"><span class="bar" style="width:51%"></span></span><span class="n">157,906</span></div>
-<div class="distrow"><span class="lb">Celestial III</span><span class="track"><span class="bar" style="width:16%"></span></span><span class="n">48,286</span></div>
-<div class="distrow"><span class="lb">Grandmaster</span><span class="track"><span class="bar" style="width:7%"></span></span><span class="n">22,089</span></div>
-<div class="distrow"><span class="lb">Diamond &amp; below</span><span class="track"><span class="bar" style="width:3%"></span></span><span class="n">7,757</span></div>
-</div>
-<p class="note">Plus ~166,800 unranked/hidden slots. Median ≈ 5,033 RS, peak ≈ 5,700 RS.</p>
+<!--RANKDIST--><div class="dist"><div class="distrow"><span class="lb">One Above All</span><span class="track"><span class="bar" style="width:17%"></span></span><span class="n">52,572</span></div><div class="distrow"><span class="lb">Eternity</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="n">309,917</span></div><div class="distrow"><span class="lb">Celestial I</span><span class="track"><span class="bar" style="width:87%"></span></span><span class="n">270,040</span></div><div class="distrow"><span class="lb">Celestial II</span><span class="track"><span class="bar" style="width:51%"></span></span><span class="n">157,906</span></div><div class="distrow"><span class="lb">Celestial III</span><span class="track"><span class="bar" style="width:16%"></span></span><span class="n">48,286</span></div><div class="distrow"><span class="lb">Grandmaster</span><span class="track"><span class="bar" style="width:7%"></span></span><span class="n">22,089</span></div><div class="distrow"><span class="lb">Diamond &amp; below</span><span class="track"><span class="bar" style="width:3%"></span></span><span class="n">7,757</span></div></div>
+<p class="note">Plus ~166,783 unranked/hidden slots. Median ≈ 5,033 RS, peak ≈ 5,704 RS.</p><!--/RANKDIST-->
 </div>
 </details>
 
