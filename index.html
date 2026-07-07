@@ -201,7 +201,32 @@ body.shake{animation:screenshake .28s}
   .play{grid-template-columns:1fr}
   .simout{justify-content:center;flex-wrap:wrap}
 }
-.score{position:relative}.score::before,.score::after{content:"";position:absolute;width:15px;height:15px;border:2px solid var(--yellow);pointer-events:none;opacity:.9}.score::before{top:7px;left:7px;border-right:0;border-bottom:0}.score::after{bottom:7px;right:7px;border-left:0;border-top:0}</style>
+.score{position:relative}.score::before,.score::after{content:"";position:absolute;width:15px;height:15px;border:2px solid var(--yellow);pointer-events:none;opacity:.9}.score::before{top:7px;left:7px;border-right:0;border-bottom:0}.score::after{bottom:7px;right:7px;border-left:0;border-top:0}
+.methods{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin:12px 0;clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%)}
+.methods>summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-family:var(--disp2);font-size:14.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--yellow);user-select:none}
+.methods>summary::-webkit-details-marker{display:none}
+.methods>summary .tw{color:var(--dim);font-size:11px;transition:transform .2s}
+.methods[open]>summary .tw{transform:rotate(90deg)}
+.methods>summary:hover{color:#fff}
+.methods .mbody{padding:2px 18px 20px;border-top:1px solid var(--line);font-size:13.5px;line-height:1.62;color:var(--ink)}
+.methods h4{font-family:var(--disp2);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:18px 0 6px}
+.methods p{margin:7px 0}
+.methods ul{margin:6px 0;padding-left:18px}
+.methods li{margin:4px 0}
+.methods b.v{color:var(--yellow);font-weight:600}
+.methods em{color:var(--ink);font-style:italic;opacity:.92}
+.methods .eq{font-family:var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:11px 0;overflow-x:auto;font-size:12.5px;line-height:1.95;white-space:nowrap;color:var(--ink)}
+.methods .eq .c{color:var(--dim)}
+.dist{margin:9px 0 4px}
+.distrow{display:grid;grid-template-columns:120px 1fr 60px;align-items:center;gap:9px;margin:4px 0;font-size:12px}
+.distrow .lb{color:var(--ink)}
+.distrow .track{display:block;height:14px;background:rgba(125,132,174,.14);border-radius:3px;overflow:hidden}
+.distrow .bar{display:block;height:100%;background:linear-gradient(90deg,#57c7ff,#2f9fe8);border-radius:3px}
+.distrow .n{font-family:var(--mono);color:var(--dim);text-align:right}
+.methods .stat{display:inline-block;min-width:112px;color:var(--dim)}
+.methods .grid2{display:grid;grid-template-columns:1fr 1fr;gap:3px 24px;margin:8px 0;font-size:12.5px}
+.methods .note{color:var(--dim);font-size:11.5px;margin-top:6px}
+@media(max-width:640px){.methods .grid2{grid-template-columns:1fr}.distrow{grid-template-columns:98px 1fr 54px}}</style>
 </head>
 <body>
 
@@ -277,6 +302,66 @@ body.shake{animation:screenshake .28s}
 
 <!-- ROSTER -->
 <section class="roster" id="roster"></section>
+
+<!-- METHODS -->
+<details class="methods">
+<summary><span class="tw">▶</span>Methodology &amp; data — the regression behind every number</summary>
+<div class="mbody">
+<p>Every hero and team-up value here is an <b class="v">adjusted plus-minus</b>: a ridge-penalized logistic regression of match outcome on who played each side, holding both teams' full rosters, team-ups, role composition, map, mode, and the individual players constant. A number is a hero's contribution to <b class="v">win log-odds</b> versus a ridge-centered average pick — not a raw win rate. On the display scale, <b class="v">1 point ≈ 2.5% win probability</b> in a close game.</p>
+
+<h4>The model</h4>
+<p>Each row is one match, with y<sub>i</sub>=1 if side A wins. A signed presence variable marks which side fielded each hero:</p>
+<div class="eq">x<sub>ih</sub> = 1{h is a main on A} − 1{h is a main on B} ∈ {−1, 0, +1}</div>
+<p>(+1 on your side, −1 on the enemy, 0 if absent or mirrored; a "main" is a player's most-played hero that match.) Win probability follows a logistic link:</p>
+<div class="eq">Pr(y<sub>i</sub>=1) = σ(η<sub>i</sub>),   σ(z) = 1 / (1 + e<sup>−z</sup>)<br><br>η<sub>i</sub> = β<sub>0</sub><br>&nbsp;&nbsp;+ Σ<sub>h</sub> β<sub>h</sub> x<sub>ih</sub><span class="c">&nbsp;&nbsp;&nbsp;hero effects</span><br>&nbsp;&nbsp;+ Σ<sub>t</sub> τ<sub>t</sub> z<sub>it</sub><span class="c">&nbsp;&nbsp;&nbsp;team-ups</span><br>&nbsp;&nbsp;+ Σ<sub>p</sub> α<sub>p</sub> u<sub>ip</sub><span class="c">&nbsp;&nbsp;&nbsp;player effects</span><br>&nbsp;&nbsp;+ Σ<sub>c</sub> ω<sub>c</sub> v<sub>ic</sub><span class="c">&nbsp;&nbsp;&nbsp;role composition</span><br>&nbsp;&nbsp;+ Σ<sub>m</sub> γ<sub>m</sub> map<sub>im</sub><span class="c">&nbsp;&nbsp;&nbsp;map</span><br>&nbsp;&nbsp;+ Σ<sub>k</sub> δ<sub>k</sub> mode<sub>ik</sub><span class="c">&nbsp;&nbsp;&nbsp;game mode</span></div>
+
+<h4>What's held constant</h4>
+<ul>
+<li><b>Both teams' heroes.</b> Signed coding measures a hero against games where the <em>enemy</em> fields it too, not just yours.</li>
+<li><b>Team-ups.</b> z<sub>it</sub> switches on when an anchor and ≥1 partner are both mains; τ<sub>t</sub> is the bonus <em>beyond</em> the heroes that form it.</li>
+<li><b>Player effects.</b> A signed term α<sub>p</sub> for every player with ≥2 matches, so a hero isn't credited for the smurf piloting it. u<sub>ip</sub> = 1{p on A} − 1{p on B}.</li>
+<li><b>Role composition.</b> Signed V-D-S structure categories (2-2-2 vs 1-3-2, …), counted only when both teams field a readable structure, so a swap-heavy team can't fake one.</li>
+<li><b>Map, game mode, and a leak-free pre-match rank differential</b>, so lobby skill and venue can't leak into a hero's value.</li>
+</ul>
+
+<h4>Estimation</h4>
+<p>Fit by ridge-penalized logistic regression:</p>
+<div class="eq">θ&#770; = argmin<sub>θ</sub> &nbsp;−Σ<sub>i</sub> [ y<sub>i</sub> log p<sub>i</sub> + (1−y<sub>i</sub>) log(1−p<sub>i</sub>) ] &nbsp;+&nbsp; λ‖(β,τ,γ,δ,ω)‖<sub>2</sub><sup>2</sup> &nbsp;+&nbsp; λ<sub>P</sub>‖α‖<sub>2</sub><sup>2</sup></div>
+<p>The first term is log-loss (fit); the ridge penalties shrink correlated, noisy coefficients toward zero. The player block carries a much stronger penalty λ<sub>P</sub>, so a player effect only moves when the track record demands it. Both λ's are tuned out-of-sample on a forward-in-time validation split. Because each side fields the same number of heroes, the hero features sum to zero within a match — coefficients are <em>centered</em>, read relative to the average hero.</p>
+
+<h4>Uncertainty</h4>
+<p>Error bars are a nonparametric bootstrap: resample matches with replacement (1,999 draws), refit the full ridge model each time, take the central 95% of every coefficient. Ridge has no valid classical p-value, so a value is only marked "real" when its 95% interval excludes zero.</p>
+
+<h4>Reading a value</h4>
+<p>Coefficients are log-odds and <em>relative</em>: a team never fills an empty slot, it swaps hero j for hero h, moving the fitted log-odds by β<sub>h</sub> − β<sub>j</sub>. Near an even game the logistic slope is ≈ ¼, so swapping an average hero for one worth β shifts win probability by roughly 25β percentage points. (The display multiplies β by 10, so 1 shown point ≈ 2.5%.)</p>
+
+<h4>The data</h4>
+<div class="grid2">
+<span><span class="stat">Matches</span> <b class="v">62,439</b> ranked 8.5</span>
+<span><span class="stat">Window</span> 21 Jun – 6 Jul 2026</span>
+<span><span class="stat">Player-slots</span> 752,720</span>
+<span><span class="stat">Unique players</span> 132,039</span>
+<span><span class="stat">Hero instances</span> 1,462,221</span>
+<span><span class="stat">Player effects</span> 59,525</span>
+<span><span class="stat">Sources</span> rivalsmeta 49,902 + rivalsdata 12,537</span>
+<span><span class="stat">Out-of-sample</span> AUC 0.641 · log-loss 0.660 (vs 0.693)</span>
+</div>
+<p class="note">The two sources are merged and cross-source de-duplicated (a game captured by both is kept once); every match carries the full 12-player roster with per-player rank.</p>
+
+<h4>Rank distribution</h4>
+<p>A high-elo sample — nearly all of it sits from Celestial up to One Above All (player-slots by tier):</p>
+<div class="dist">
+<div class="distrow"><span class="lb">One Above All</span><span class="track"><span class="bar" style="width:21%"></span></span><span class="n">45,759</span></div>
+<div class="distrow"><span class="lb">Eternity</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="n">221,996</span></div>
+<div class="distrow"><span class="lb">Celestial I</span><span class="track"><span class="bar" style="width:77%"></span></span><span class="n">170,931</span></div>
+<div class="distrow"><span class="lb">Celestial II</span><span class="track"><span class="bar" style="width:45%"></span></span><span class="n">100,422</span></div>
+<div class="distrow"><span class="lb">Celestial III</span><span class="track"><span class="bar" style="width:14%"></span></span><span class="n">29,962</span></div>
+<div class="distrow"><span class="lb">Grandmaster</span><span class="track"><span class="bar" style="width:6%"></span></span><span class="n">12,391</span></div>
+<div class="distrow"><span class="lb">Diamond &amp; below</span><span class="track"><span class="bar" style="width:2%"></span></span><span class="n">4,477</span></div>
+</div>
+<p class="note">A further 154,030 slots are unranked/hidden (rank not exposed by the profile). Peak rank in-sample ≈ 5,700 RS.</p>
+</div>
+</details>
 
 
 <div id="banner"><div class="card"><span id="bannerCard"></span></div></div>
