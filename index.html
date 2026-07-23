@@ -38,6 +38,10 @@ body{background:
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 img{display:block}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:2px}
+*{scrollbar-width:thin;scrollbar-color:rgba(139,148,190,.35) transparent}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(139,148,190,.35);border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
 
 header{margin-bottom:16px}
 .mastrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
@@ -45,7 +49,7 @@ h1{font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.2vw,46px);lett
 h1 .hl{color:var(--gold)}
 .seasonchip{font-family:var(--disp2);font-size:13px;letter-spacing:.16em;color:var(--text-dark);background:var(--gold);padding:4px 12px 3px;transform:skew(-6deg) translateY(-4px)}
 .seasonchip span{display:inline-block;transform:skew(6deg)}
-.tag{margin-top:7px;font-size:14.5px;color:var(--dim);max-width:70ch}
+.tag{margin-top:7px;font-size:14.5px;color:var(--dim);max-width:70ch;text-wrap:pretty}
 .tag b{color:var(--gold);font-weight:600}
 .dataline{margin-top:5px;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.02em}
 .dataline b{color:var(--ink);font-weight:600}
@@ -87,9 +91,18 @@ h1 .hl{color:var(--gold)}
 .pickpill{margin-left:auto;font-family:var(--disp2);font-size:11px;letter-spacing:.1em;padding:4px 11px;border-radius:2px;border:1px solid var(--line);color:var(--dim)}
 .team.sel .pickpill{background:var(--gold);border-color:transparent;color:var(--text-dark)}
 .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.slot{position:relative;display:block;width:100%;background:var(--panel);border-radius:5px;color:var(--ink);text-align:left;padding:0;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.slot{position:relative;display:block;width:100%;background:var(--panel);border-radius:6px;color:var(--ink);text-align:left;padding:0;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
 .slot.filled{box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 45%,transparent)}
 .slot.filled:hover{box-shadow:inset 0 0 0 1px currentColor}
+.slot.filled .cardwin::after{content:"\2715";position:absolute;top:6px;left:6px;width:20px;height:20px;display:grid;place-items:center;background:rgba(13,16,32,.82);color:#fff;font-size:11px;border-radius:3px;opacity:0;transition:opacity .15s}
+.slot.filled:hover .cardwin::after{opacity:1}
+.boards.dealt .slot{animation:cardin .32s cubic-bezier(.3,1.5,.5,1) backwards}
+.boards.dealt .slot:nth-child(2){animation-delay:.04s}
+.boards.dealt .slot:nth-child(3){animation-delay:.08s}
+.boards.dealt .slot:nth-child(4){animation-delay:.12s}
+.boards.dealt .slot:nth-child(5){animation-delay:.16s}
+.boards.dealt .slot:nth-child(6){animation-delay:.2s}
+@keyframes cardin{from{transform:translateY(7px) scale(.97);opacity:0}}
 .cardwin{position:relative;aspect-ratio:181/238;overflow:hidden;background:#0a0d1a;clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,0 100%)}
 .cardart{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .25s}
 .slot.filled:hover .cardart{transform:scale(1.04)}
@@ -139,17 +152,18 @@ body.shake{animation:screenshake .28s}
 @keyframes teamflash{from{box-shadow:inset 0 0 0 2px currentColor,0 0 44px currentColor}}
 
 .scenarios{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:6px}
-.scenlabel{font-family:var(--disp2);font-size:12px;letter-spacing:.14em;color:var(--dim);margin-right:3px}
+.scenlabel{font-family:var(--disp2);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-right:3px}
 .pbtn{font-family:var(--disp2);font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:3px;border:1px solid var(--line);background:var(--raise);color:var(--ink);transition:background .15s,color .15s,border-color .15s}
 .pbtn:hover{background:var(--gold);color:var(--text-dark);border-color:transparent}
 .pbtn.ghost{background:transparent;color:var(--dim);font-size:13px}
 .pbtn.ghost:hover{background:var(--raise);color:var(--ink)}
 #note{min-height:20px;font-family:var(--mono);font-size:12.5px;color:var(--gold);margin:4px 2px 12px}
 
-.why{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px 14px;margin-bottom:12px}
-.whyhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:6px}
-.whyhead h2{font-family:var(--disp2);font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.whyhead .key{font-size:12px;color:var(--dim)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px 14px;margin-bottom:12px}
+.phead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:6px 18px}
+.phead h2{font-family:var(--disp2);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.phead .key{font-size:12px;color:var(--dim)}
+.phead .key b{color:var(--ink);font-weight:600}
 .key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px}
 .key .ka{background:var(--a)} .key .kb{background:var(--b)}
 .tug{position:relative;display:flex;justify-content:center;align-items:center;min-height:78px;overflow-x:auto}
@@ -178,8 +192,10 @@ body.shake{animation:screenshake .28s}
 @keyframes pop{from{transform:scale(.5);opacity:0}}
 .tugempty{position:absolute;inset:0;display:grid;place-items:center;color:var(--dim);font-size:13px}
 
-.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.rcol{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.rcol{padding:4px 14px 0;min-width:0;border-left:1px solid var(--line)}
+.rcol:first-child{border-left:0;padding-left:2px}
+.rcol:last-child{padding-right:2px}
 .rhead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
 .rhead img{width:22px;height:22px;filter:drop-shadow(0 0 4px rgba(242,197,34,.4))}
 .rhead h3{font-family:var(--disp);font-size:19px;letter-spacing:.08em;text-transform:uppercase;transform:skew(-6deg)}
@@ -203,8 +219,6 @@ body.shake{animation:screenshake .28s}
 .hero.unc .est{opacity:.75}
 .hero.onA{box-shadow:inset 3px 0 0 var(--a)} .hero.onB{box-shadow:inset 3px 0 0 var(--b)}
 .hero.onA.onB{box-shadow:inset 3px 0 0 var(--a),inset -3px 0 0 var(--b)}
-.rosterfoot{font-size:11.5px;color:var(--dim);padding:8px 4px 0}
-.rosterfoot b{color:var(--ink);font-weight:600}
 
 .methods{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:12px 0}
 .methods>summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-family:var(--disp2);font-size:14.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);user-select:none}
@@ -260,6 +274,8 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
   .boards{grid-template-columns:1fr}
   .vs{display:none}
   .roster{grid-template-columns:1fr}
+  .rcol{border-left:0;border-top:1px solid var(--line);padding:12px 2px 0}
+  .rcol:first-child{border-top:0;padding-top:4px}
   .rlist{max-height:none}
   .needlerow{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"pa pb" "nd nd"}
   .pct.a{grid-area:pa;text-align:left}
@@ -287,7 +303,7 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
     <span class="seasonchip"><span>MARVEL RIVALS</span></span>
   </div>
   <p class="tag">Click heroes to draft both teams. Every pick is worth points: <b>1 point &asymp; 2.5% win chance</b> in a close game.</p>
-  <div class="dataline"><!--MASTHEAD--><b>Season 9</b> &middot; 121,830 ranked matches &middot; 10 Jul – 23 Jul 2026 &middot; refreshed 23 Jul 2026<!--/MASTHEAD--></div>
+  <div class="dataline"><!--MASTHEAD--><b>Season 9</b> &middot; 121,830 ranked matches &middot; 10–23 Jul 2026 &middot; refreshed 23 Jul<!--/MASTHEAD--></div>
 </header>
 
 <section class="frame" aria-label="Draft board">
@@ -321,7 +337,7 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
 
   <div class="playbar">
     <button class="bigbtn" id="btnPlay"><span>&#9654; PLAY THE MATCH</span></button>
-    <button class="hundo" id="btn100">&times;100</button>
+    <button class="hundo" id="btn100" title="Simulate 100 matches instantly">&times;100</button>
     <div class="simout">
       <div class="dots" id="dots"></div>
       <div class="tally" id="tally">A <span class="ta">0</span> : <span class="tb">0</span> B</div>
@@ -341,8 +357,8 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
 </div>
 <div id="note"></div>
 
-<section class="why">
-  <div class="whyhead">
+<section class="panel">
+  <div class="phead">
     <h2>Where the points come from</h2>
     <div class="key">pulls<i class="ka"></i>Team A<i class="kb"></i>Team B &nbsp;&middot;&nbsp; &#9889; eligible team-up &nbsp;&middot;&nbsp; <span class="shapeic" id="keyshape"></span>team shape</div>
   </div>
@@ -354,8 +370,13 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
   </div>
 </section>
 
-<section class="roster" id="roster" aria-label="Hero roster"></section>
-<p class="rosterfoot">Each whisker is the <b>95% bootstrap interval</b> around a hero's value. A dimmed number means the interval still touches zero, so the sign is not settled.</p>
+<section class="panel" aria-label="Hero roster">
+  <div class="phead">
+    <h2>Hero values</h2>
+    <div class="key">whisker = <b>95% bootstrap interval</b> &middot; dimmed value = interval still touches zero</div>
+  </div>
+  <div class="roster" id="roster"></div>
+</section>
 
 <details class="methods">
 <summary><span class="tw">&#9654;</span>Methods &amp; data</summary>
@@ -412,7 +433,7 @@ S.addEventListener("input",upd);upd();})();
 <p class="note">The fit is ridge-penalized, so correlated or noisy picks get pulled toward average unless the data insists, and it is tuned out-of-sample. Every value ships with a 1,999-draw bootstrap interval; the roster shows it as a whisker, and a shape shown with a faint &asymp; is one whose interval still touches zero.</p>
 
 <h4>The data</h4>
-<!--DATASTATS--><div class="grid2"><span><span class="stat">Matches</span><b class="v">121,830</b> ranked S9</span><span><span class="stat">Window</span>10 Jul – 23 Jul 2026</span><span><span class="stat">Player-slots</span>1,531,805</span><span><span class="stat">Unique players</span>249,821</span><span><span class="stat">Hero instances</span>2,992,545</span><span><span class="stat">Player effects</span>129,050</span><span><span class="stat">OOS AUC</span>0.6766</span><span><span class="stat">OOS log-loss</span>0.6422 (vs 0.693)</span></div>
+<!--DATASTATS--><div class="grid2"><span><span class="stat">Matches</span><b class="v">121,830</b> ranked S9</span><span><span class="stat">Window</span>10–23 Jul 2026</span><span><span class="stat">Player-slots</span>1,531,805</span><span><span class="stat">Unique players</span>249,821</span><span><span class="stat">Hero instances</span>2,992,545</span><span><span class="stat">Player effects</span>129,050</span><span><span class="stat">OOS AUC</span>0.6766</span><span><span class="stat">OOS log-loss</span>0.6422 (vs 0.693)</span></div>
 <p class="note">Season 9 crawl of a public match tracker; every match carries the full roster with per-player rank.</p><!--/DATASTATS-->
 
 <h4>Rank distribution</h4>
@@ -667,6 +688,10 @@ $("#btn100").addEventListener("click",()=>{
   },14);
 });
 
+function deal(){
+  const bd=document.querySelector(".boards");
+  bd.classList.remove("dealt");void bd.offsetWidth;bd.classList.add("dealt");
+}
 function update(){
   if(animating)cancelAnim();
   const m=compute();curP=m.p;
@@ -739,7 +764,7 @@ document.querySelectorAll("[data-p]").forEach(b=>{
   if(!p){b.style.display="none";return;}
   b.addEventListener("click",()=>{
     state.A=[...p.A];state.B=[...p.B];state.side="A";
-    $("#note").textContent="▸ "+p.note;update();
+    $("#note").textContent="▸ "+p.note;update();deal();
   });
 });
 $("#btnClear").addEventListener("click",()=>{state.A=[];state.B=[];state.side="A";$("#note").textContent="";update();});
@@ -750,7 +775,7 @@ $("#btnRandom").addEventListener("click",()=>{
     const pick=(r,n)=>HEROES.filter(h=>h.role===r).sort(()=>Math.random()-.5).slice(0,n).map(h=>h.id);
     return [...pick("V",s[0]),...pick("D",s[1]),...pick("S",s[2])];
   };
-  state.A=draw();state.B=draw();$("#note").textContent="";update();
+  state.A=draw();state.B=draw();$("#note").textContent="";update();deal();
 });
 
 buildRoster();
@@ -759,7 +784,7 @@ $("#keyshape").innerHTML=`<img src="${ROLEICON.V}" alt="V"><img src="${ROLEICON.
   const p=PRESETS.combo||PRESETS.mirror;
   state.A=[...p.A];state.B=[...p.B];
   $("#note").textContent="▸ "+p.note;
-  resetSim();update();
+  resetSim();update();deal();
 })();
 </script>
 </body>
