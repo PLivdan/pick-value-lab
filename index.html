@@ -6,7 +6,13 @@
 <title>Pick Value Lab · Marvel Rivals draft simulator</title>
 <meta name="description" content="Draft two Marvel Rivals teams and see the model's win chance. Adjusted hero pick values from Season 9 ranked matches, with honest uncertainty.">
 <meta property="og:title" content="Pick Value Lab · Marvel Rivals draft simulator">
-<meta property="og:description" content="Every pick is worth points. Draft both teams and watch the win needle move.">
+<meta property="og:description" content="Find the best Draft! Every pick is worth points. Build both teams and watch the win needle move.">
+<meta property="og:url" content="https://plivdan.github.io/pick-value-lab/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://plivdan.github.io/pick-value-lab/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0d1020">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230d1020'/%3E%3Cpath d='M58 8 24 56h17L42 92 76 44H59Z' fill='%23f2c522'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +49,8 @@ img{display:block}
 ::-webkit-scrollbar-thumb{background:rgba(139,148,190,.35);border-radius:4px}
 ::-webkit-scrollbar-track{background:transparent}
 
-header{margin-bottom:16px}
+header{margin-bottom:16px;position:relative}
+header::after{content:"";position:absolute;inset:-14px -30px -6px;background:repeating-linear-gradient(-55deg,rgba(139,148,190,.055) 0 2px,transparent 2px 26px);-webkit-mask-image:linear-gradient(90deg,#000,transparent 72%);mask-image:linear-gradient(90deg,#000,transparent 72%);pointer-events:none;z-index:-1}
 .mastrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 h1{font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.2vw,46px);letter-spacing:.03em;text-transform:uppercase;transform:skew(-6deg);line-height:1}
 h1 .hl{color:var(--gold)}
@@ -54,7 +61,7 @@ h1 .hl{color:var(--gold)}
 .dataline{margin-top:5px;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.02em}
 .dataline b{color:var(--ink);font-weight:600}
 
-.frame{position:relative;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:10px;padding:18px clamp(12px,2vw,24px) 16px;margin-bottom:12px}
+.frame{position:relative;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:10px;padding:18px clamp(12px,2vw,24px) 16px;margin-bottom:12px;transition:box-shadow .55s}
 .frame::before,.frame::after{content:"";position:absolute;width:16px;height:16px;border:2px solid var(--gold);pointer-events:none;opacity:.85}
 .frame::before{top:8px;left:8px;border-right:0;border-bottom:0}
 .frame::after{bottom:8px;right:8px;border-left:0;border-top:0}
@@ -70,6 +77,9 @@ h1 .hl{color:var(--gold)}
 .stripes{position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.08) 0 14px,transparent 14px 28px);animation:slide 2.6s linear infinite;pointer-events:none}
 @keyframes slide{to{background-position:80px 0}}
 .midtick{position:absolute;left:50%;top:6px;bottom:6px;width:0;border-left:2px dashed rgba(255,255,255,.42);transform:translateX(-1px) skew(-8deg)}
+.qtick{position:absolute;top:5px;height:9px;width:0;border-left:2px solid rgba(255,255,255,.3);transform:skew(-8deg);pointer-events:none}
+.pct.punch{animation:pctpunch .4s cubic-bezier(.3,1.6,.4,1)}
+@keyframes pctpunch{from{transform:skew(-6deg) scale(1.28)}}
 #flag{position:absolute;top:5px;bottom:17px;left:50%;transform:translateX(-50%);transition:left .55s cubic-bezier(.4,1.4,.4,1);pointer-events:none;z-index:2}
 #flag .pole{position:absolute;left:50%;top:0;bottom:0;width:4px;transform:translateX(calc(-50% - 4px)) skew(-8deg);background:#fff;border-radius:2px;box-shadow:0 0 10px rgba(255,255,255,.7)}
 #flag .pennant{position:absolute;left:calc(50% + 1px);top:-9px;width:0;height:0;border-top:11px solid var(--gold);border-bottom:11px solid transparent;border-right:26px solid transparent;filter:drop-shadow(0 0 6px rgba(242,197,34,.6))}
@@ -94,6 +104,7 @@ h1 .hl{color:var(--gold)}
 .slot{position:relative;display:block;width:100%;background:var(--panel);border-radius:6px;color:var(--ink);text-align:left;padding:0;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
 .slot.filled{box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 45%,transparent)}
 .slot.filled:hover{box-shadow:inset 0 0 0 1px currentColor}
+.slot.filled .cardwin::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:rgba(255,255,255,.16);z-index:1}
 .slot.filled .cardwin::after{content:"\2715";position:absolute;top:6px;left:6px;width:20px;height:20px;display:grid;place-items:center;background:rgba(13,16,32,.82);color:#fff;font-size:11px;border-radius:3px;opacity:0;transition:opacity .15s}
 .slot.filled:hover .cardwin::after{opacity:1}
 .boards.dealt .slot{animation:cardin .32s cubic-bezier(.3,1.5,.5,1) backwards}
@@ -108,6 +119,8 @@ h1 .hl{color:var(--gold)}
 .slot.filled:hover .cardart{transform:scale(1.04)}
 .cardinit{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--disp);font-size:34px;color:#5a6390}
 .cardbar{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 7px;min-height:25px;background:var(--panel2)}
+.cardbar .nmwrap{display:flex;align-items:center;gap:5px;min-width:0}
+.cardbar .rico{width:11px;height:11px;opacity:.85;flex:none}
 .cardbar .nm{font-family:var(--disp2);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cardbar .pt{font-family:var(--mono);font-size:11.5px;font-weight:600;flex:none}
 .pt.up{color:var(--pos)} .pt.dn{color:var(--neg)}
@@ -153,7 +166,10 @@ body.shake{animation:screenshake .28s}
 
 .scenarios{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:6px}
 .scenlabel{font-family:var(--disp2);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-right:3px}
-.pbtn{font-family:var(--disp2);font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:3px;border:1px solid var(--line);background:var(--raise);color:var(--ink);transition:background .15s,color .15s,border-color .15s}
+.pbtn{display:inline-flex;align-items:center;gap:8px;font-family:var(--disp2);font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:3px;border:1px solid var(--line);background:var(--raise);color:var(--ink);transition:background .15s,color .15s,border-color .15s}
+.pbheads{display:inline-flex}
+.pbheads img{width:20px;height:20px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(13,16,32,.7)}
+.pbheads img+img{margin-left:-7px}
 .pbtn:hover{background:var(--gold);color:var(--text-dark);border-color:transparent}
 .pbtn.ghost{background:transparent;color:var(--dim);font-size:13px}
 .pbtn.ghost:hover{background:var(--raise);color:var(--ink)}
@@ -262,11 +278,31 @@ body.shake{animation:screenshake .28s}
 
 #banner{position:fixed;inset:0;display:none;place-items:center;pointer-events:none;z-index:50}
 #banner.show{display:grid}
-#banner .card{transform:skew(-8deg);text-align:center;padding:22px 56px;border-radius:8px;background:rgba(13,16,32,.93);border:2px solid currentColor;box-shadow:0 0 60px currentColor;animation:stamp .45s cubic-bezier(.2,1.6,.4,1)}
-#banner .card>span{display:inline-block;transform:skew(8deg);font-family:var(--disp);font-size:clamp(40px,7vw,84px);letter-spacing:.05em}
-#banner .bheads{display:flex;justify-content:center;gap:6px;margin-top:10px;transform:skew(8deg)}
-#banner .bheads img{width:34px;aspect-ratio:1;object-fit:cover;border-radius:3px;border:1px solid currentColor}
+#banner .card{position:relative;overflow:hidden;transform:skew(-8deg);text-align:center;padding:34px 64px;border-radius:8px;background:rgba(13,16,32,.93);border:2px solid currentColor;box-shadow:0 0 60px currentColor;animation:stamp .45s cubic-bezier(.2,1.6,.4,1)}
+#banner .fan{position:absolute;inset:0;display:flex;justify-content:center;align-items:flex-end;opacity:.26;pointer-events:none}
+#banner .fan img{width:21%;margin:0 -2%;transform-origin:50% 100%}
+#banner .fan img:nth-child(1){transform:rotate(-10deg) translateY(12%)}
+#banner .fan img:nth-child(2){transform:rotate(-6deg) translateY(5%)}
+#banner .fan img:nth-child(3){transform:rotate(-2deg)}
+#banner .fan img:nth-child(4){transform:rotate(2deg)}
+#banner .fan img:nth-child(5){transform:rotate(6deg) translateY(5%)}
+#banner .fan img:nth-child(6){transform:rotate(10deg) translateY(12%)}
+#banner .card>span{position:relative;display:inline-block;transform:skew(8deg);font-family:var(--disp);font-size:clamp(40px,7vw,84px);letter-spacing:.05em;text-shadow:0 2px 18px rgba(0,0,0,.85)}
 @keyframes stamp{from{transform:skew(-8deg) scale(2.2);opacity:0}}
+
+#hovercard{position:fixed;z-index:45;width:224px;background:var(--panel2);border:1px solid var(--line-hi);border-radius:8px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.55);opacity:0;transform:translateY(5px);transition:opacity .14s,transform .14s;pointer-events:none}
+#hovercard.show{opacity:1;transform:none}
+#hovercard .hcart{width:100%;aspect-ratio:181/200;object-fit:cover;object-position:top center}
+#hovercard .hcbody{padding:9px 11px 11px;border-top:1px solid var(--line)}
+#hovercard .hcname{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--disp2);font-size:14px;letter-spacing:.03em;text-transform:uppercase}
+#hovercard .hcrole{font-size:10.5px;color:var(--dim);letter-spacing:.1em}
+#hovercard .hcval{font-family:var(--mono);font-size:16px;font-weight:600;margin-top:2px}
+#hovercard .hcci{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-top:2px;line-height:1.55}
+#hovercard .hctus{margin-top:7px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--line);padding-top:7px}
+#hovercard .hctu{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;color:var(--dim);white-space:nowrap}
+#hovercard .hctu img{height:14px;width:auto;flex:none}
+#hovercard .hctu .tn{overflow:hidden;text-overflow:ellipsis}
+#hovercard .hctu b{margin-left:auto;font-weight:600}
 
 footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
 
@@ -302,8 +338,8 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
     <h1>PICK <span class="hl">VALUE</span> LAB</h1>
     <span class="seasonchip"><span>MARVEL RIVALS</span></span>
   </div>
-  <p class="tag">Click heroes to draft both teams. Every pick is worth points: <b>1 point &asymp; 2.5% win chance</b> in a close game.</p>
-  <div class="dataline"><!--MASTHEAD--><b>Season 9</b> &middot; 121,830 ranked matches &middot; 10–23 Jul 2026 &middot; refreshed 23 Jul<!--/MASTHEAD--></div>
+  <p class="tag">Find the best Draft! Every pick is worth points: <b>1 point &asymp; 2.5% win chance</b> in a close game.</p>
+  <div class="dataline"><!--MASTHEAD--><b>Season 9</b> &middot; 121,830 ranked matches &middot; 10–23 Jul 2026 &middot; refreshed 24 Jul<!--/MASTHEAD--></div>
 </header>
 
 <section class="frame" aria-label="Draft board">
@@ -314,6 +350,8 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
         <div id="fillA"></div>
         <div class="stripes"></div>
         <div class="midtick"></div>
+        <div class="qtick" style="left:25%"></div>
+        <div class="qtick" style="left:75%"></div>
       </div>
       <div id="flag"><div class="pole"></div><div class="pennant"></div></div>
       <div class="lead" id="lead">dead even &middot; <b>0.0 pts</b></div>
@@ -445,7 +483,8 @@ S.addEventListener("input",upd);upd();})();
 
 <footer>Season 9 ranked ladder &middot; penalized estimates with 95% bootstrap intervals &middot; a Rivals Lab build &middot; not affiliated with NetEase or Marvel</footer>
 
-<div id="banner"><div class="card"><span id="bannerCard"></span><div class="bheads" id="bannerHeads"></div></div></div>
+<div id="banner"><div class="card"><div class="fan" id="bannerFan"></div><span id="bannerCard"></span></div></div>
+<div id="hovercard" aria-hidden="true"></div>
 
 <script>
 const HEROES=[{"id":"mantis","name":"Mantis","role":"S","b":0.64,"lo":0.57,"hi":0.71,"n":25656},{"id":"peni","name":"Peni Parker","role":"V","b":0.61,"lo":0.54,"hi":0.69,"n":10556},{"id":"ultron","name":"Ultron","role":"S","b":0.4,"lo":0.32,"hi":0.47,"n":9773},{"id":"thing","name":"The Thing","role":"V","b":0.38,"lo":0.33,"hi":0.45,"n":32799},{"id":"thor","name":"Thor","role":"V","b":0.34,"lo":0.28,"hi":0.41,"n":24844},{"id":"hulk","name":"Hulk","role":"V","b":0.33,"lo":0.27,"hi":0.39,"n":26724},{"id":"magneto","name":"Magneto","role":"V","b":0.32,"lo":0.27,"hi":0.38,"n":49337},{"id":"rocket","name":"Rocket Raccoon","role":"S","b":0.32,"lo":0.25,"hi":0.38,"n":39559},{"id":"blackcat","name":"Black Cat","role":"D","b":0.32,"lo":0.25,"hi":0.37,"n":12903},{"id":"angela","name":"Angela","role":"V","b":0.31,"lo":0.24,"hi":0.38,"n":11676},{"id":"venom","name":"Venom","role":"V","b":0.29,"lo":0.24,"hi":0.36,"n":31474},{"id":"magik","name":"Magik","role":"D","b":0.27,"lo":0.21,"hi":0.32,"n":20860},{"id":"daredevil","name":"Daredevil","role":"D","b":0.26,"lo":0.2,"hi":0.32,"n":15056},{"id":"loki","name":"Loki","role":"S","b":0.24,"lo":0.17,"hi":0.31,"n":14118},{"id":"groot","name":"Groot","role":"V","b":0.24,"lo":0.17,"hi":0.32,"n":14896},{"id":"warlock","name":"Adam Warlock","role":"S","b":0.24,"lo":0.16,"hi":0.32,"n":9311},{"id":"storm","name":"Storm","role":"D","b":0.24,"lo":0.17,"hi":0.31,"n":11514},{"id":"psylocke","name":"Psylocke","role":"D","b":0.24,"lo":0.17,"hi":0.3,"n":15916},{"id":"dino","name":"Devil Dinosaur","role":"V","b":0.23,"lo":0.17,"hi":0.3,"n":16406},{"id":"cap","name":"Captain America","role":"V","b":0.2,"lo":0.13,"hi":0.27,"n":13699},{"id":"ironfist","name":"Iron Fist","role":"D","b":0.18,"lo":0.12,"hi":0.23,"n":21579},{"id":"tankpool","name":"Tankpool","role":"V","b":0.15,"lo":0.09,"hi":0.22,"n":17379},{"id":"fantastic","name":"Mister Fantastic","role":"D","b":0.14,"lo":0.07,"hi":0.22,"n":10451},{"id":"hela","name":"Hela","role":"D","b":0.14,"lo":0.08,"hi":0.2,"n":20797},{"id":"emma","name":"Emma Frost","role":"V","b":0.12,"lo":0.06,"hi":0.18,"n":37014},{"id":"spiderman","name":"Spider-Man","role":"D","b":0.11,"lo":0.05,"hi":0.16,"n":24664},{"id":"rogue","name":"Rogue","role":"V","b":0.1,"lo":0.04,"hi":0.17,"n":17064},{"id":"ironman","name":"Iron Man","role":"D","b":0.1,"lo":0.03,"hi":0.17,"n":10944},{"id":"elsa","name":"Elsa Bloodstone","role":"D","b":0.09,"lo":0.04,"hi":0.14,"n":24799},{"id":"panther","name":"Black Panther","role":"D","b":0.09,"lo":0.03,"hi":0.15,"n":14579},{"id":"torch","name":"Human Torch","role":"D","b":0.08,"lo":-0.01,"hi":0.16,"n":9644},{"id":"gambit","name":"Gambit","role":"S","b":0.07,"lo":-0.0,"hi":0.15,"n":17434},{"id":"cloak","name":"Cloak & Dagger","role":"S","b":0.03,"lo":-0.04,"hi":0.09,"n":42720},{"id":"wolverine","name":"Wolverine","role":"D","b":0.03,"lo":-0.04,"hi":0.09,"n":11251},{"id":"jeff","name":"Jeff the Land Shark","role":"S","b":0.02,"lo":-0.06,"hi":0.09,"n":16791},{"id":"strange","name":"Doctor Strange","role":"V","b":0.02,"lo":-0.04,"hi":0.08,"n":34961},{"id":"iw","name":"Invisible Woman","role":"S","b":0.01,"lo":-0.06,"hi":0.07,"n":41224},{"id":"blade","name":"Blade","role":"D","b":0.01,"lo":-0.06,"hi":0.08,"n":11947},{"id":"hawkeye","name":"Hawkeye","role":"D","b":-0.01,"lo":-0.08,"hi":0.07,"n":7683},{"id":"winter","name":"Winter Soldier","role":"D","b":-0.02,"lo":-0.07,"hi":0.03,"n":38112},{"id":"starlord","name":"Star-Lord","role":"D","b":-0.02,"lo":-0.08,"hi":0.04,"n":18340},{"id":"luna","name":"Luna Snow","role":"S","b":-0.03,"lo":-0.09,"hi":0.04,"n":40468},{"id":"jubilee","name":"Jubilee","role":"S","b":-0.03,"lo":-0.09,"hi":0.04,"n":44793},{"id":"widow","name":"Black Widow","role":"D","b":-0.03,"lo":-0.09,"hi":0.02,"n":24609},{"id":"whitefox","name":"White Fox","role":"S","b":-0.09,"lo":-0.15,"hi":-0.02,"n":28477},{"id":"dpspool","name":"DPSPool","role":"D","b":-0.09,"lo":-0.15,"hi":-0.03,"n":11176},{"id":"healpool","name":"Healpool","role":"S","b":-0.1,"lo":-0.17,"hi":-0.03,"n":12332},{"id":"namor","name":"Namor","role":"D","b":-0.1,"lo":-0.16,"hi":-0.04,"n":22641},{"id":"punisher","name":"The Punisher","role":"D","b":-0.15,"lo":-0.22,"hi":-0.09,"n":19179},{"id":"cyclops","name":"Cyclops","role":"D","b":-0.19,"lo":-0.24,"hi":-0.14,"n":21460},{"id":"phoenix","name":"Phoenix","role":"D","b":-0.23,"lo":-0.3,"hi":-0.17,"n":14430},{"id":"squirrel","name":"Squirrel Girl","role":"D","b":-0.32,"lo":-0.41,"hi":-0.23,"n":3970},{"id":"scarlet","name":"Scarlet Witch","role":"D","b":-0.38,"lo":-0.48,"hi":-0.27,"n":6101},{"id":"moonknight","name":"Moon Knight","role":"D","b":-0.4,"lo":-0.5,"hi":-0.32,"n":4815}];
@@ -469,6 +508,7 @@ const shapeIcon=s=>{const[v,d,st]=s.split("-");
 const ROLES={V:"Vanguard",D:"Duelist",S:"Strategist"};
 const state={A:[],B:[],side:"A"};
 const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const canHover=matchMedia("(hover:hover) and (pointer:fine)").matches;
 
 function compute(){
   const inA=new Set(state.A),inB=new Set(state.B);
@@ -509,7 +549,7 @@ function slotHTML(id,team,mirrors){
   const art=CARDS[id]?`<img class="cardart" src="${CARDS[id]}" alt="${h.name}">`:`<span class="cardinit">${initials(h.name)}</span>`;
   return `<button class="slot filled ${mir?"mir":""}" data-id="${id}" data-team="${team}" title="${h.name} · click to remove">
     <div class="cardwin">${art}${mir?`<span class="ribbon">CANCELS &#8596;</span>`:""}</div>
-    <div class="cardbar"><span class="nm">${h.name}</span><span class="pt ${h.b>=0?"up":"dn"}">${pts(h.b)}</span></div>
+    <div class="cardbar"><span class="nmwrap">${ROLEICON[h.role]?`<img class="rico" src="${ROLEICON[h.role]}" alt="${ROLES[h.role]}">`:""}<span class="nm">${h.name}</span></span><span class="pt ${h.b>=0?"up":"dn"}">${pts(h.b)}</span></div>
   </button>`;
 }
 function chipsHTML(team,m){
@@ -552,13 +592,28 @@ function renderTug(m){
   $("#tugEmpty").style.display=m.rows.length?"none":"grid";
   if(!m.rows.length)$("#tugEmpty").textContent=(state.A.length||state.B.length)?"everything cancels · no pull either way":"pick some heroes…";
 }
+let pctRaf=0;
+function setPct(v){$("#pctA").textContent=Math.round(v);$("#pctB").textContent=Math.round(100-v);}
+function tweenPct(to,dur){
+  cancelAnimationFrame(pctRaf);
+  const from=parseFloat($("#pctA").textContent);
+  if(reduceMotion||!isFinite(from)||dur<=0){setPct(to);return;}
+  const t0=performance.now();
+  (function fr(now){
+    const u=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-u,3);
+    setPct(from+(to-from)*e);
+    if(u<1)pctRaf=requestAnimationFrame(fr);
+  })(t0);
+}
 function renderScore(m){
   const pA=m.p*100;
-  $("#pctA").textContent=Math.round(pA);
-  $("#pctB").textContent=Math.round(100-pA);
+  tweenPct(pA,550);
   $("#fillA").style.width=pA+"%";
   $("#flag").style.left=pA+"%";
   $("#needle").setAttribute("aria-label",`Team A win probability ${Math.round(pA)}%`);
+  const lean=(m.p-.5)*2,ga=Math.min(.4,Math.abs(lean)*.55);
+  document.querySelector(".frame").style.boxShadow=Math.abs(lean)<.06?"":
+    (lean>0?`-28px 0 90px -34px rgba(79,193,247,${ga})`:`28px 0 90px -34px rgba(255,106,61,${ga})`);
   const d=m.sum*10;
   $("#lead").innerHTML=Math.abs(d)<0.05?`dead even &middot; <b>0.0 pts</b>`:`${d>0?"Team A ahead by":"Team B ahead by"} <b>${Math.abs(d).toFixed(1)} pts</b>`;
 }
@@ -577,7 +632,7 @@ function buildRoster(){
     <div class="rcol"><div class="rhead"><img src="${ROLEICON[r]}" alt=""><h3>${ROLES[r]}</h3></div>
     <div class="rlist">${cols[r].map(h=>{
       const unc=h.lo<0&&h.hi>0;
-      return `<button class="hero ${unc?"unc":""}" data-id="${h.id}" title="${heroTitle(h)}">
+      return `<button class="hero ${unc?"unc":""}" data-id="${h.id}"${canHover?"":` title="${heroTitle(h)}"`}>
         ${faceHTML(h.id)}
         <div class="nm">${h.name}</div>
         ${ciHTML(h)}
@@ -592,6 +647,36 @@ function refreshRosterTags(){
   });
 }
 
+const hc=document.getElementById("hovercard");
+function hideHover(){hc.classList.remove("show");}
+function showHover(id,rowEl){
+  const h=H[id];
+  if(!h||!CARDS[id]){hideHover();return;}
+  const tus=TEAMUPS.filter(t=>t.a.includes(id)||t.p.includes(id))
+    .slice().sort((x,y)=>Math.abs(y.t)-Math.abs(x.t)).slice(0,3);
+  hc.innerHTML=`<img class="hcart" src="${CARDS[id]}" alt="">`
+   +`<div class="hcbody"><div class="hcname"><span>${h.name}</span><span class="hcrole">${ROLES[h.role]||""}</span></div>`
+   +`<div class="hcval pt ${h.b>=0?"up":"dn"}">${pts(h.b)} pts</div>`
+   +`<div class="hcci">95% interval ${pts(h.lo)} to ${pts(h.hi)}${h.n?`<br>${h.n.toLocaleString()} team-games`:""}</div>`
+   +(tus.length?`<div class="hctus">${tus.map(t=>`<span class="hctu">${t.ic?`<img src="${t.ic}" alt="">`:"&#9889;"}<span class="tn">${t.name}</span><b class="pt ${t.t>=0?"up":"dn"}">${pts(t.t)}</b></span>`).join("")}</div>`:"")
+   +`</div>`;
+  const r=rowEl.getBoundingClientRect(),W=224,Hc=hc.offsetHeight||330;
+  let x=r.right+12;
+  if(x+W>innerWidth-8)x=r.left-W-12;
+  if(x<8)x=8;
+  const y=Math.min(Math.max(8,r.top+r.height/2-Hc/2),innerHeight-Hc-8);
+  hc.style.left=x+"px";hc.style.top=y+"px";
+  hc.classList.add("show");
+}
+if(canHover){
+  document.getElementById("roster").addEventListener("mouseover",e=>{
+    const el=e.target.closest(".hero");
+    if(el)showHover(el.dataset.id,el);else hideHover();
+  });
+  document.getElementById("roster").addEventListener("mouseleave",hideHover);
+  addEventListener("scroll",hideHover,{passive:true});
+}
+
 let simKey="",curP=0.5,dotIdx=0;
 function resetSim(){
   $("#dots").innerHTML=Array.from({length:100},()=>`<div class="dot"></div>`).join("");
@@ -602,13 +687,16 @@ function banner(winA){
   const c=$("#bannerCard"),card=c.parentElement;
   c.innerHTML=winA?"&#127942; TEAM A WINS!":"&#127942; TEAM B WINS!";
   card.style.color=winA?"var(--a)":"var(--b)";
-  $("#bannerHeads").innerHTML=(winA?state.A:state.B).map(id=>ICONS[id]?`<img src="${ICONS[id]}" alt="${H[id].name}">`:"").join("");
+  $("#bannerFan").innerHTML=(winA?state.A:state.B).map(id=>CARDS[id]?`<img src="${CARDS[id]}" alt="">`:"").join("");
   $("#banner").classList.add("show");
   setTimeout(()=>$("#banner").classList.remove("show"),1500);
 }
 function impact(winA){
   banner(winA);
   if(reduceMotion)return;
+  const pel=$("#pct"+(winA?"A":"B")).parentElement;
+  pel.classList.remove("punch");void pel.offsetWidth;pel.classList.add("punch");
+  setTimeout(()=>pel.classList.remove("punch"),460);
   document.body.classList.remove("shake");void document.body.offsetWidth;
   document.body.classList.add("shake");
   setTimeout(()=>document.body.classList.remove("shake"),320);
@@ -644,6 +732,8 @@ function addDot(winA,fresh){
 let animating=false,animToken=0;
 function cancelAnim(){
   animToken++;animating=false;
+  cancelAnimationFrame(pctRaf);
+  setPct(curP*100);
   $("#needle").classList.remove("live","slam","charge");
   $("#btnPlay").disabled=false;$("#btn100").disabled=false;
 }
@@ -660,18 +750,18 @@ $("#btnPlay").addEventListener("click",()=>{
     const u=Math.min(1,(now-t0)/DUR);
     const amp=5+30*u;
     const w=Math.max(3,Math.min(97,p0+Math.sin(ph+u*17)*amp*(1-.2*u)));
-    fill.style.width=w+"%";flag.style.left=w+"%";
+    fill.style.width=w+"%";flag.style.left=w+"%";setPct(w);
     if(u<1){requestAnimationFrame(fr);return;}
     rope.classList.remove("live");rope.classList.add("slam");
     const wEnd=winA?100:0;
-    fill.style.width=wEnd+"%";flag.style.left=wEnd+"%";
+    fill.style.width=wEnd+"%";flag.style.left=wEnd+"%";tweenPct(wEnd,260);
     setTimeout(()=>{
       if(my!==animToken)return;
       impact(winA);addDot(winA,true);
       setTimeout(()=>{
         if(my!==animToken)return;
         rope.classList.remove("slam","charge");
-        fill.style.width=p0+"%";flag.style.left=p0+"%";
+        fill.style.width=p0+"%";flag.style.left=p0+"%";tweenPct(p0,550);
         setTimeout(()=>{if(my===animToken)cancelAnim();},580);
       },650);
     },270);
@@ -694,6 +784,7 @@ function deal(){
 }
 function update(){
   if(animating)cancelAnim();
+  hideHover();
   const m=compute();curP=m.p;
   renderTeams(m);renderTug(m);renderScore(m);refreshRosterTags();
   const key=state.A.join(",")+"|"+state.B.join(",");
@@ -727,9 +818,11 @@ const heroSum=t=>t.reduce((s,id)=>s+H[id].b,0);
 function buildPresets(){
   const P={};
   const top222=[...take("V",2),...take("D",2),...take("S",2)];
-  P.mirror={A:[...top222],B:[...top222],
+  P.mirror={A:[...top222],B:[...top222],heads:[top222[0],top222[0]],
     note:"Same twelve picks on both sides, so every point cancels. The model calls it a coin flip."};
+  const byB=HEROES.slice().sort((a,b)=>b.b-a.b);
   P.stomp={A:[...top222],B:[...takeWorst("V",2),...takeWorst("D",2),...takeWorst("S",2)],
+    heads:[byB[0].id,byB[byB.length-1].id],
     note:"The six best picks vs the six worst. This is what a stomp looks like on paper."};
   const tu=TEAMUPS.find(t=>H[t.a[0]]&&H[t.p[0]]);
   if(tu){
@@ -739,6 +832,7 @@ function buildPresets(){
     for(const r of ["V","D","S"])if(need[r]>0)A.push(...take(r,need[r],seedSet));
     const aSet=new Set(A);
     P.combo={A,B:[...take("V",2,aSet),...take("D",2,aSet),...take("S",2,aSet)],
+      heads:[tu.a[0],tu.p[0]],
       note:`${H[tu.a[0]].name} + ${H[tu.p[0]].name} make ⚡ ${tu.name} eligible: bonus points on top of the picks.`};
   }
   const B3=[...take("V",3),...take("D",1),...take("S",2)];
@@ -750,11 +844,12 @@ function buildPresets(){
     if(A.some(id=>B3.includes(id)))continue;
     if(heroSum(A)<heroSum(B3)&&heroSum(A)+wA>heroSum(B3)+wB){shapeA=A;break;}
   }
-  if(shapeA)P.shape={A:shapeA,B:B3,
+  if(shapeA)P.shape={A:shapeA,B:B3,heads:[shapeA[0],B3[0]],
     note:`Team B's heroes score higher, but a 2-2-2 shape beats ${shapeOf(B3)} on structure alone.`};
   const gA=[...take("V",5),"rocket"];
   const gSet=new Set(gA);
   P.gator={A:gA,B:[...take("V",2,gSet),...take("D",2,gSet),...take("S",2,gSet)],
+    heads:[gA[0],"rocket"],
     note:"🐊 Go All Tanks One Rocket: five Vanguards and a lone Rocket. No structure bonus for a 5-0-1 wall, so it lives or dies on raw hero value."};
   return P;
 }
@@ -762,6 +857,7 @@ const PRESETS=buildPresets();
 document.querySelectorAll("[data-p]").forEach(b=>{
   const p=PRESETS[b.dataset.p];
   if(!p){b.style.display="none";return;}
+  if(p.heads)b.insertAdjacentHTML("afterbegin",`<span class="pbheads">${p.heads.map(id=>ICONS[id]?`<img src="${ICONS[id]}" alt="">`:"").join("")}</span>`);
   b.addEventListener("click",()=>{
     state.A=[...p.A];state.B=[...p.B];state.side="A";
     $("#note").textContent="▸ "+p.note;update();deal();
