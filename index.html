@@ -50,7 +50,7 @@ img{display:block}
 ::-webkit-scrollbar-track{background:transparent}
 
 header{margin-bottom:16px;position:relative}
-header::after{content:"";position:absolute;inset:-14px -30px -6px;background:repeating-linear-gradient(-55deg,rgba(139,148,190,.055) 0 2px,transparent 2px 26px);-webkit-mask-image:linear-gradient(90deg,#000,transparent 72%);mask-image:linear-gradient(90deg,#000,transparent 72%);pointer-events:none;z-index:-1}
+header::after{content:"";position:absolute;inset:-14px 0 -6px;background:repeating-linear-gradient(-55deg,rgba(139,148,190,.055) 0 2px,transparent 2px 26px);-webkit-mask-image:linear-gradient(90deg,#000,transparent 72%);mask-image:linear-gradient(90deg,#000,transparent 72%);pointer-events:none;z-index:-1}
 .mastrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 h1{font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.2vw,46px);letter-spacing:.03em;text-transform:uppercase;transform:skew(-6deg);line-height:1}
 h1 .hl{color:var(--gold)}
@@ -242,27 +242,41 @@ body.shake{animation:screenshake .28s}
 .methods>summary .tw{color:var(--dim);font-size:11px;transition:transform .2s}
 .methods[open]>summary .tw{transform:rotate(90deg)}
 .methods>summary:hover{color:#fff}
-.methods .mbody{padding:14px 20px 22px;border-top:1px solid var(--line);font-size:13px;line-height:1.68;color:var(--dim)}
-.methods .mlead{font-size:14px;line-height:1.6;color:var(--ink);margin:2px 0 4px}
-.methods h4{font-family:var(--disp2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:22px 0 9px;padding-top:16px;border-top:1px solid var(--line)}
-.methods p{margin:8px 0}
+.methods .sumhint{margin-left:auto;font-family:var(--body);font-weight:400;font-size:12px;letter-spacing:.01em;text-transform:none;color:var(--dim)}
+.methods .mbody{padding:16px 20px 24px;border-top:1px solid var(--line);font-size:13px;line-height:1.68;color:var(--dim)}
+.methods .mlead{font-size:14.5px;line-height:1.62;color:var(--ink);margin:2px 0 6px;padding-left:14px;border-left:3px solid var(--gold);max-width:84ch}
+.methods h4{font-family:var(--disp2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.methods .msec{border-top:1px solid var(--line);margin-top:22px;padding-top:16px}
+.methods .mcols{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px}
+.methods .mcols>div{min-width:0}
+.methods p{margin:8px 0;max-width:74ch}
 .methods ul{margin:8px 0;padding-left:2px;list-style:none}
 .methods li{margin:6px 0;padding-left:14px;position:relative}
 .methods li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--gold);opacity:.7;transform:rotate(45deg)}
 .methods li b{color:var(--ink)}
 .methods b.v{color:var(--gold);font-weight:600}
 .methods em{color:var(--ink);font-style:italic}
-.methods .eq{font-family:var(--mono);background:var(--void);border:1px solid var(--line);border-radius:6px;padding:13px 15px;margin:12px 0;overflow-x:auto;font-size:12.5px;line-height:2;white-space:nowrap;color:var(--ink)}
+.methods .eq{font-family:var(--mono);background:var(--void);border:1px solid var(--line);border-radius:6px;padding:13px 15px;margin:12px 0;overflow-x:auto;font-size:12.5px;line-height:2;white-space:nowrap;color:var(--ink);max-width:640px}
 .methods .eq .c{color:var(--dim)}
+.eqcard{background:var(--void);border:1px solid var(--line);border-radius:8px;padding:4px 16px 10px;margin:12px 0;max-width:660px;overflow-x:auto}
+.eqhead{display:flex;flex-wrap:wrap;gap:4px 20px;align-items:baseline;font-family:var(--mono);font-size:13px;color:var(--ink);padding:11px 2px 9px;border-bottom:1px solid var(--line)}
+.eqhead .eqc{font-size:11px;color:var(--dim)}
+.eqrow{display:grid;grid-template-columns:170px 110px 1fr;gap:14px;align-items:baseline;padding:7px 2px;border-top:1px dashed rgba(139,148,190,.16)}
+.eqhead+.eqrow{border-top:0}
+.eqm{font-family:var(--mono);font-size:12.5px;color:var(--ink);white-space:nowrap}
+.eqlbl{font-family:var(--disp2);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.eqlbl img{display:inline-block;width:11px;height:11px;vertical-align:-1.5px;margin-right:2px;opacity:.9}
+.eqnote{font-size:12px;color:var(--dim)}
 .dist{margin:10px 0 4px}
 .distrow{display:grid;grid-template-columns:118px 1fr 62px;align-items:center;gap:11px;margin:5px 0;font-size:12px}
 .distrow .lb{color:var(--ink)}
 .distrow .track{display:block;height:13px;background:rgba(139,148,190,.13);border-radius:3px;overflow:hidden}
 .distrow .bar{display:block;height:100%;background:linear-gradient(90deg,#4fc1f7,#2596dd);border-radius:3px}
 .distrow .n{font-family:var(--mono);color:var(--dim);text-align:right}
-.methods .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 28px;margin:10px 0}
-.methods .grid2 span{display:block;font-size:12.5px;color:var(--ink)}
-.methods .stat{display:inline-block;min-width:120px;color:var(--dim)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 2px}
+.tile{background:var(--void);border:1px solid var(--line);border-radius:6px;padding:9px 12px 8px;min-width:0}
+.tile b{display:block;font-family:var(--mono);font-size:16.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile span{display:block;margin-top:2px;font-size:10.5px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
 .methods .note{color:var(--dim);font-size:11.5px;margin-top:8px}
 .logit{background:var(--void);border:1px solid var(--line);border-radius:6px;padding:14px 15px 10px;margin:12px 0;max-width:520px}
 .logit svg{width:100%;height:auto;display:block}
@@ -319,10 +333,12 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
   .needlewrap{grid-area:nd}
   .playbar{grid-template-columns:1fr 1fr}
   .simout{grid-column:1/-1;justify-content:center;flex-wrap:wrap}
+  .methods .mcols{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  .methods .grid2{grid-template-columns:1fr}
+  .methods .sumhint{display:none}
   .distrow{grid-template-columns:96px 1fr 56px}
+  .eqrow{grid-template-columns:1fr;gap:2px}
   .slots{gap:6px}
   .cardbar .nm{font-size:10px}
 }
@@ -417,16 +433,29 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
 </section>
 
 <details class="methods">
-<summary><span class="tw">&#9654;</span>Methods &amp; data</summary>
+<summary><span class="tw">&#9654;</span>Methods &amp; data<span class="sumhint">how the values are estimated &middot; what the sample looks like</span></summary>
 <div class="mbody">
 <p class="mlead">Each value is an <b class="v">adjusted plus-minus</b>: a ridge logistic regression of who wins on who was on each side, controlling for both full rosters, team-ups, role composition, map, mode, and the individual players. It measures a hero's contribution to <b class="v">win log-odds</b>, not a raw win rate. Scale: <b class="v">1 point &asymp; 2.5% win chance</b> in a close game.</p>
 
+<div class="msec">
 <h4>The model</h4>
 <p>One row per match, with y<sub>i</sub> = 1 when side A wins. Each hero enters as a signed presence, +1 on your side, &minus;1 on the enemy, 0 if absent or mirrored:</p>
 <div class="eq">x<sub>ih</sub> = 1{h main on A} &minus; 1{h main on B} &isin; {&minus;1, 0, +1}</div>
-<p>Win probability is logistic in a sum of effects:</p>
-<div class="eq">Pr(y<sub>i</sub> = 1) = &sigma;(&eta;<sub>i</sub>),   &sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>)<br><br>&eta;<sub>i</sub> = &beta;<sub>0</sub><br>&nbsp;&nbsp;+ &Sigma;<sub>h</sub> &beta;<sub>h</sub> x<sub>ih</sub><span class="c">&nbsp;&nbsp;&nbsp;heroes</span><br>&nbsp;&nbsp;+ &Sigma;<sub>t</sub> &tau;<sub>t</sub> z<sub>it</sub><span class="c">&nbsp;&nbsp;&nbsp;team-ups</span><br>&nbsp;&nbsp;+ &Sigma;<sub>p</sub> &alpha;<sub>p</sub> u<sub>ip</sub><span class="c">&nbsp;&nbsp;&nbsp;players</span><br>&nbsp;&nbsp;+ &Sigma;<sub>c</sub> &omega;<sub>c</sub> v<sub>ic</sub><span class="c">&nbsp;&nbsp;&nbsp;composition</span><br>&nbsp;&nbsp;+ &Sigma;<sub>m</sub> &gamma;<sub>m</sub> map<sub>im</sub> + &Sigma;<sub>k</sub> &delta;<sub>k</sub> mode<sub>ik</sub><span class="c">&nbsp;&nbsp;&nbsp;map &middot; mode</span></div>
+<p>Win probability is logistic in a sum of effects, and every term is something you can see on this page:</p>
+<div class="eqcard">
+<div class="eqhead"><span>Pr(y<sub>i</sub> = 1) = &sigma;(&eta;<sub>i</sub>)</span><span class="eqc">&sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>)</span></div>
+<div class="eqrow"><span class="eqm">&eta;<sub>i</sub> = &beta;<sub>0</sub></span><span class="eqlbl">baseline</span><span class="eqnote">the even-game anchor</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>h</sub> &beta;<sub>h</sub> x<sub>ih</sub></span><span class="eqlbl">heroes</span><span class="eqnote">every pick's value, the numbers in the roster</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>t</sub> &tau;<sub>t</sub> z<sub>it</sub></span><span class="eqlbl">&#9889; team-ups</span><span class="eqnote">the bonus behind each eligibility chip</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>p</sub> &alpha;<sub>p</sub> u<sub>ip</sub></span><span class="eqlbl">players</span><span class="eqnote">who is actually in the lobby</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>c</sub> &omega;<sub>c</sub> v<sub>ic</sub></span><span class="eqlbl">composition</span><span class="eqnote">the 2-2-2 / 1-3-2 shape chip</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>m</sub> &gamma;<sub>m</sub> map<sub>im</sub></span><span class="eqlbl">map</span><span class="eqnote">where the match is played</span></div>
+<div class="eqrow"><span class="eqm">+ &Sigma;<sub>k</sub> &delta;<sub>k</sub> mode<sub>ik</sub></span><span class="eqlbl">mode</span><span class="eqnote">and under which ruleset</span></div>
+</div>
+</div>
 
+<div class="msec mcols">
+<div>
 <h4>What's held constant</h4>
 <ul>
 <li><b>Both teams' heroes.</b> A pick is graded against games where the enemy runs it too, not just yours.</li>
@@ -435,7 +464,8 @@ footer{margin-top:18px;text-align:center;font-size:11.5px;color:var(--dim)}
 <li><b>Role composition.</b> Signed 2-2-2 / 1-3-2 categories, counted only when both sides field a clean structure.</li>
 <li><b>Map, mode, and a leak-free pre-match rank gap</b>, so venue and lobby skill can't leak in.</li>
 </ul>
-
+</div>
+<div>
 <h4>Points to win chance</h4>
 <p>A value is <em>relative</em> log-odds, centered on the average hero, so a pick is really a swap: fielding hero h over hero j moves the score by &beta;<sub>h</sub> &minus; &beta;<sub>j</sub>. The logistic link &sigma; turns that score into the win % on the scoreboard, and it is steepest near an even game, so one point moves the needle most in a coin flip. Drag below to see it.</p>
 <div class="logit">
@@ -469,15 +499,21 @@ eE.textContent=(z>=0?"+":"")+z.toFixed(2);eP.textContent=Math.round(p*100)+"%";}
 S.addEventListener("input",upd);upd();})();
 </script>
 <p class="note">The fit is ridge-penalized, so correlated or noisy picks get pulled toward average unless the data insists, and it is tuned out-of-sample. Every value ships with a 1,999-draw bootstrap interval; the roster shows it as a whisker, and a shape shown with a faint &asymp; is one whose interval still touches zero.</p>
+</div>
+</div>
 
+<div class="msec mcols">
+<div>
 <h4>The data</h4>
-<!--DATASTATS--><div class="grid2"><span><span class="stat">Matches</span><b class="v">121,830</b> ranked S9</span><span><span class="stat">Window</span>10–23 Jul 2026</span><span><span class="stat">Player-slots</span>1,531,805</span><span><span class="stat">Unique players</span>249,821</span><span><span class="stat">Hero instances</span>2,992,545</span><span><span class="stat">Player effects</span>129,050</span><span><span class="stat">OOS AUC</span>0.6766</span><span><span class="stat">OOS log-loss</span>0.6422 (vs 0.693)</span></div>
-<p class="note">Season 9 crawl of a public match tracker; every match carries the full roster with per-player rank.</p><!--/DATASTATS-->
-
+<!--DATASTATS--><div class="tiles"><div class="tile"><b class="v">121,830</b><span>ranked S9 matches</span></div><div class="tile"><b>10–23 Jul 2026</b><span>window</span></div><div class="tile"><b>1,531,805</b><span>player-slots</span></div><div class="tile"><b>249,821</b><span>unique players</span></div><div class="tile"><b>2,992,545</b><span>hero instances</span></div><div class="tile"><b>129,050</b><span>player effects</span></div><div class="tile"><b>0.6766</b><span>out-of-sample AUC</span></div><div class="tile"><b>0.6422</b><span>log-loss &middot; 0.693 = coin flip</span></div></div><!--/DATASTATS-->
+</div>
+<div>
 <h4>Rank distribution</h4>
 <p>Player-slots by tier:</p>
-<!--RANKDIST--><div class="dist"><div class="distrow"><span class="lb">One Above All</span><span class="track"><span class="bar" style="width:0%"></span></span><span class="n">2,680</span></div><div class="distrow"><span class="lb">Eternity</span><span class="track"><span class="bar" style="width:0%"></span></span><span class="n">786</span></div><div class="distrow"><span class="lb">Celestial I</span><span class="track"><span class="bar" style="width:3%"></span></span><span class="n">23,992</span></div><div class="distrow"><span class="lb">Celestial II</span><span class="track"><span class="bar" style="width:12%"></span></span><span class="n">96,590</span></div><div class="distrow"><span class="lb">Celestial III</span><span class="track"><span class="bar" style="width:27%"></span></span><span class="n">228,061</span></div><div class="distrow"><span class="lb">Grandmaster</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="n">837,660</span></div><div class="distrow"><span class="lb">Diamond &amp; below</span><span class="track"><span class="bar" style="width:8%"></span></span><span class="n">68,927</span></div></div>
+<!--RANKDIST--><div class="dist"><div class="distrow" title="0% of ranked slots"><span class="lb">One Above All</span><span class="track"><span class="bar" style="width:0%"></span></span><span class="n">2,680</span></div><div class="distrow" title="0% of ranked slots"><span class="lb">Eternity</span><span class="track"><span class="bar" style="width:0%"></span></span><span class="n">786</span></div><div class="distrow" title="2% of ranked slots"><span class="lb">Celestial I</span><span class="track"><span class="bar" style="width:3%"></span></span><span class="n">23,992</span></div><div class="distrow" title="8% of ranked slots"><span class="lb">Celestial II</span><span class="track"><span class="bar" style="width:12%"></span></span><span class="n">96,590</span></div><div class="distrow" title="18% of ranked slots"><span class="lb">Celestial III</span><span class="track"><span class="bar" style="width:27%"></span></span><span class="n">228,061</span></div><div class="distrow" title="67% of ranked slots"><span class="lb">Grandmaster</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="n">837,660</span></div><div class="distrow" title="5% of ranked slots"><span class="lb">Diamond &amp; below</span><span class="track"><span class="bar" style="width:8%"></span></span><span class="n">68,927</span></div></div>
 <p class="note">Plus ~273,109 unranked/hidden slots. Median ≈ 4,673 RS, peak ≈ 5,377 RS.</p><!--/RANKDIST-->
+</div>
+</div>
 </div>
 </details>
 
